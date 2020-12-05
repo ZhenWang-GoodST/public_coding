@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(coverage_test)
 add_compile_options(-std=c++11)
-set(ROOTPATH "/home/tl/tergeo/planning_algorithm")
-set(ROOTPATH_COVERAGE "/home/tl/tergeo/planning_algorithm/coverage_planners")
-set(ROOTPATH_P2P "/home/tl/tergeo/planning_algorithm/p2p_planners")
-set(ROOTPATH_SMOOTH "/home/tl/tergeo/planning_algorithm/smoother")
-set(ROOTPATH_SPEED "/home/tl/tergeo/planning_algorithm/speed_generator")
+set(ROOT ~/company/coding)
+set(ROOTPATH ${ROOT}/planning_algorithm)
+set(ROOTPATH_COVERAGE ${ROOTPATH}/coverage_planners)
+set(ROOTPATH_P2P ${ROOTPATH}/p2p_planners)
+set(ROOTPATH_SMOOTH ${ROOTPATH}/smoother)
+set(ROOTPATH_SPEED ${ROOTPATH}/speed_generator)
 
 message(STATUS ${ROOTPATH})
 message(STATUS ${ROOTPATH_COVERAGE})
@@ -23,8 +24,8 @@ find_package(CGAL COMPONENTS Core)
 
 # include_directories(${GFLAGS_INCLUDE_DIRS} ${GLOG_INCLUDE_DIRS})
 include_directories(${GLOG_INCLUDE_DIRS})
-include_directories(~/tergeo)
-include_directories(~/tergeo/planning_algorithm)
+include_directories(${ROOT})
+include_directories(${ROOTPATH})
 include_directories(${OMPL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 
 

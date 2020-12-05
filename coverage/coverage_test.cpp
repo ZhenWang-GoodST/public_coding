@@ -9,23 +9,22 @@ std::string root_path = "/home/tl/hdmap_test/maps/floor_3-200818/floor_3";
 std::string map_name = "/floor_3";
 std::string map_path = root_path + map_name + ".jpg";
 std::string tfw_path = root_path + map_name + ".tfw";
-std::string cfg_file = "/home/tl/bow_shape_planner.cfg";
+std::string cfg_file = "/home/wz/bow_shape_planner.cfg";
 int count = 100;
 
 void read(std::string cfg_file) {
     ParamReader reader;
     if(reader.loadParam(cfg_file)){
         std::string bo, ls;
-        // if(reader.getValue("root_path", bo)){
-        //     root_path = bo.c_str();
-        // }
-        // if(reader.getValue("root_path", bo)){
-        //     root_path = atof(bo.c_str());
-        // }
+        if(reader.getValue("root_path", bo)){
+            root_path = bo.c_str();
+        }
         if(reader.getValue("count", bo)){
             count = atoi(bo.c_str());
         }
     }
+    map_path = root_path + map_name + ".jpg";
+    tfw_path = root_path + map_name + ".tfw";
 }
 
 int main()
