@@ -9,23 +9,28 @@ std::string root_path = "/home/tl/hdmap_test/maps/floor_3-200818/floor_3";
 std::string map_name = "/floor_3";
 std::string map_path = root_path + map_name + ".jpg";
 std::string tfw_path = root_path + map_name + ".tfw";
-ParamReader reader;
+std::string cfg_file = "/home/tl/bow_shape_planner.cfg";
+int count = 100;
 
 void read(std::string cfg_file) {
+    ParamReader reader;
     if(reader.loadParam(cfg_file)){
         std::string bo, ls;
-        if(reader.getValue("root_path", bo)){
-            root_path = bo.c_str();
+        // if(reader.getValue("root_path", bo)){
+        //     root_path = bo.c_str();
+        // }
+        // if(reader.getValue("root_path", bo)){
+        //     root_path = atof(bo.c_str());
+        // }
+        if(reader.getValue("count", bo)){
+            count = atoi(bo.c_str());
         }
-        if(reader.getValue("root_path", bo)){
-            root_path = atof(bo.c_str());
-        }
-        
     }
 }
 
 int main()
 {
+    read(cfg_file);
     google::InitGoogleLogging("loging");
     FLAGS_log_dir = "/home/tl/tmp"; 
     LOG(INFO) << "\nGLOG: hello world";
@@ -41,8 +46,8 @@ int main()
     outpoly.emplace_back(Point(-0.088631346578366452, -0.53178807947019868));
     outpoly.emplace_back(Point(-5.2735651214128039, 4.5201986754966894));
     
-    for (size_t i = 0; i < 100; ++i) {
-        UTInterlacedPlanner UTIPlanner("/home/tl/bow_shape_planner.cfg");
+    for (size_t i = 0; i < count; ++i) {
+        UTInterlacedPlanner UTIPlanner(cfg_file);
         UTIPlanner.loadMap(map_path, tfw_path);
         Trajectory tra;
         std::vector<Point> outline = {};
