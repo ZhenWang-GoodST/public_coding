@@ -7,17 +7,32 @@ print(len(sys.argv))
 
 path = sys.argv[1]
 input_fileName = path + "\\" + sys.argv[2] + ".txt"
-str_name = sys.argv[3]
 with_key_words = True
-if len(sys.argv) > 4:
-    with_key_words = sys.argv[4]
+with_abstract = True
+with_key_words = int(sys.argv[3])
+with_abstract= int(sys.argv[4])
+if with_key_words == False:
     key_words = "key_words: "
 else:
     key_words = "key words: "
+if with_abstract == False:
+    abstract_words = "abstract1: "
+else:
+    abstract_words = "abstract: "
 
+str_names = []
+i = 5
+out_str_name = ""
+while i < len(sys.argv):
+    str_names.append(sys.argv[i].lower())
+    out_str_name += sys.argv[i].lower() + "_"
+    i += 1
 
-print("get paper list contains: " +str_name )
+print("get paper list contains: "  )
+print(str_names)
 print("input_file: " + input_fileName )
+print("with keywords: " + str(with_key_words))
+print("with abstract: " + str(with_abstract))
 
 def getText(input_file):
     #origin_txt = open(input_file, "r",encoding='gbk').read()#gbk
@@ -33,7 +48,6 @@ origin_txt,lower_txt = getText(input_fileName)
 origin_papers = origin_txt.split("\n")
 lower_papers = lower_txt.split("\n")
 str_papers = []
-lower_str_name = str_name.lower()
 i = 0
 title = ""
 keywords = ""
@@ -43,7 +57,8 @@ keywords_id = 0
 abstract_id = 0
 length = len(lower_papers)
 count = 0
-
+one_title = False
+find_words = ""
 while i < len(lower_papers):
     line = lower_papers[i]
     if line.startswith("title: "):
@@ -52,27 +67,37 @@ while i < len(lower_papers):
     if line.startswith(key_words):
         keywords_id = i
         keywords = line.replace("key words: " , "") + "\n"
-    if line.startswith("abstract: "):
+    if line.startswith(abstract_words):
         abstract_id = i
-        abstract = line.replace("abstract: " , "") + "\n\n"
+        abstract = line.replace(abstract_words , "") + "\n\n"
+    if line == "":#one paper
+        in_find_words = True
         find_words = title + keywords + abstract
-        if lower_str_name in find_words :
-            paper = origin_papers[title_id] + "\n" + origin_papers[keywords_id] + "\n" +origin_papers[abstract_id] + "\n\n"
-            if len(sys.argv) > 4:
-                paper = origin_papers[title_id] + "\n" +origin_papers[abstract_id] + "\n\n"
-            else:
-                paper = origin_papers[title_id] + "\n" + origin_papers[keywords_id] + "\n" +origin_papers[abstract_id] + "\n\n"
-            #paper = "Title: " + title + "Keywords: " + keywords + "Abstract: " + abstract
+        for str_name in str_names:
+            if str_name not in find_words:
+                in_find_words = False
+        if in_find_words:
+            paper = origin_papers[title_id] + "\n"
+            if with_key_words:
+                paper += origin_papers[keywords_id] + "\n"
+            if with_abstract:
+                paper += origin_papers[abstract_id] + "\n"
+            paper += "\n"
             str_papers.append(paper)
             #print(paper)
             count += 1
+        title = ""
+        keywords = ""
+        abstract = ""
     i += 1
 print(count)
 length_string = str(len(str_papers))
-output_fileName = path + "\\" + str_name  + "_" + length_string + "_" + sys.argv[2] + ".txt"
-if len(sys.argv) > 4:
-    output_fileName = path + "\\" + "noKey_" + str_name  + "_" + length_string + "_" +  sys.argv[2] + ".txt"
-    
+output_fileName = path + "\\" + out_str_name + length_string
+if with_key_words:
+    output_fileName += "_keyWord" 
+if with_abstract:
+    output_fileName += "_abstract" 
+output_fileName += "_" +  sys.argv[2] + ".txt"
 fo_out = open(output_fileName, "wb")
 #fo_out = open(output_fileName, "w",encoding='gbk')#gbk
 #fo_out.write( "total paper: " + str(len(str_papers)) + "\n")#gbk
@@ -83,4 +108,3 @@ for i in range(len(str_papers)):
     fo_out.write( (str_papers[i] + "\n").encode())
  
 fo_out.close()
-
