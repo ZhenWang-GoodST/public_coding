@@ -8,6 +8,8 @@ set(ROOTPATH_P2P ${ROOTPATH}/p2p_planners)
 set(ROOTPATH_SMOOTH ${ROOTPATH}/smoother)
 set(ROOTPATH_SPEED ${ROOTPATH}/speed_generator)
 
+set(ROOTPATH_HDMAP ${ROOT}/hdmap_editor)
+
 message(STATUS ${ROOTPATH})
 message(STATUS ${ROOTPATH_COVERAGE})
 message(STATUS ${ROOTPATH_P2P})
@@ -28,6 +30,9 @@ include_directories(${ROOT})
 include_directories(${ROOTPATH})
 include_directories(${OMPL_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 
+include_directories(/home/wz/tmp/hdmap2)
+include_directories(/home/wz/tmp/common2)
+link_directories(/home/wz/tmp)
 
 #add lib
 file(GLOB_RECURSE ${TERGEO_LIB_NAME_UPPER}_SRC "./*.cpp")
@@ -42,7 +47,6 @@ ADD_LIBRARY(cov_lib SHARED
     ${ROOTPATH_COVERAGE}/common_function/param_reader.cpp
     ${ROOTPATH_COVERAGE}/common_function/polygon_partition.cpp
     ${ROOTPATH_COVERAGE}/common_function/polygon_partition4.cpp
-    ${ROOTPATH_COVERAGE}/uturn_interlaced_planner/uturn_interlaced_planner.cpp
     ${ROOTPATH_COVERAGE}/uturn_interlaced_planner/uturn_interlaced_planner.cpp
 )
 TARGET_LINK_LIBRARIES(cov_lib 
@@ -61,4 +65,7 @@ target_link_libraries(coverage_test
     cov_lib p2p glog::glog 
     ${CGAL_LIBS} ${OMPL_LIBRARIES} 
     ${OpenCV_LIBS} CGAL::CGAL CGAL::CGAL_Core
+    # tergeo_framework_2.0
+    # tergeo_common_2.0 tergeo_hdmap_2.0 
+    # tergeo_proto_2.0 tergeo_task_2.0
     )
